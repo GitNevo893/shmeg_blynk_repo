@@ -1,4 +1,3 @@
-
 import network
 import time
 import urequests
@@ -77,19 +76,21 @@ lcd=I2cLcd(i2c, I2C_ADDR, ROWS, COLS)
 lcd.clear()
 
 # User configuration
-WIFI_SSID = "WIFI_Hugim"
-WIFI_PASSWORD = "H@340208"
-WIFI_SSID = "Awesome"
-WIFI_PASSWORD = "pr14052008"
-BLYNK_AUTH = "fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
-WRITE_URL = f"https://blynk.cloud/external/api/update?token={BLYNK_AUTH}"
-READ_URL  = f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
+WIFI_SSID="WIFI_Hugim"
+WIFI_PASSWORD="H@340208"
+WIFI_SSID="Awesome"
+WIFI_PASSWORD="pr14052008"
+BLYNK_AUTH="fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
+WRITE_URL=f"https://blynk.cloud/external/api/update?token={BLYNK_AUTH}"
+READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
 # Blynk virtual pins configuration
-
-pins=[]
+cells=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14"]
+cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15"]
+missing="V16"
+missing_cells="V17"
 # Initialize Pins
-LED_PIN = "LED"  
-led = Pin("LED", Pin.OUT)
+LED_PIN="LED"  
+led=Pin("LED", Pin.OUT)
 
 # Connect to Wi-Fi
 def connect_wifi():
@@ -108,20 +109,20 @@ def connect_wifi():
     print("Connected:", wlan.ifconfig())
 # Send value to widget in Blynk
 def blynk_write(pin, value):
-    url = f"{WRITE_URL}&{pin}={value}"
+    url=f"{WRITE_URL}&{pin}={value}"
     print("URL:", url)
     try:
-        r = urequests.get(url)
+        r=urequests.get(url)
         r.close()
         print(f"Sent {value} → {pin}")
     except Exception as e:
         print("Blynk write error:", e)
 # Get the current value of widget from Blynk
 def blynk_read(pin):
-    url = f"{READ_URL}&{pin}"
+    url=f"{READ_URL}&{pin}"
     print("Reading:", url)
     try:
-        r = urequests.get(url)
+        r=urequests.get(url)
         print("RAW:", r.text)
         val = r.text
         r.close()
@@ -129,15 +130,12 @@ def blynk_read(pin):
     except Exception as e:
         print("Blynk read error:", e)
         return None
+def check_expire:
+
 # Main loop
 def main():
     connect_wifi()
     while True:
-        lcd.clear()
-        time.sleep(1)
-        value=(blynk_read(shit))
-        print(value)
-        lcd.putstr(str(value))
-        time.sleep(3.25)
+        blynk_read(cells[1])
 main()
 
