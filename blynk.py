@@ -5,24 +5,6 @@ import urequests
 from machine import Pin, ADC, I2C
 from i2c_lcd import I2cLcd
 
-# User configuration
-WIFI_SSID = "WIFI_Hugim"
-WIFI_PASSWORD = "H@340208"
-WIFI_SSID = "Awesome"
-WIFI_PASSWORD = "pr14052008"
-BLYNK_AUTH = "fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
-WRITE_URL = f"https://blynk.cloud/external/api/update?token={BLYNK_AUTH}"
-READ_URL  = f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
-LED_PIN = "LED"  
-burger = "V0"  
-slider = "V1"
-label = "V3"
-segment="V4"
-shit="V5"
-
-# Initialize Pins
-led = Pin("LED", Pin.OUT)
-
 #lcd
 class I2cLcd:
     def __init__(self, i2c, i2c_addr, num_lines, num_columns):
@@ -93,6 +75,22 @@ ROWS=2
 COLS=16
 lcd=I2cLcd(i2c, I2C_ADDR, ROWS, COLS)
 lcd.clear()
+
+# User configuration
+WIFI_SSID = "WIFI_Hugim"
+WIFI_PASSWORD = "H@340208"
+WIFI_SSID = "Awesome"
+WIFI_PASSWORD = "pr14052008"
+BLYNK_AUTH = "fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
+WRITE_URL = f"https://blynk.cloud/external/api/update?token={BLYNK_AUTH}"
+READ_URL  = f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
+# Blynk virtual pins configuration
+
+pins=[]
+# Initialize Pins
+LED_PIN = "LED"  
+led = Pin("LED", Pin.OUT)
+
 # Connect to Wi-Fi
 def connect_wifi():
     wlan = network.WLAN(network.STA_IF)
