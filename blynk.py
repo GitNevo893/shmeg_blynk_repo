@@ -86,6 +86,7 @@ READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
 # Blynk virtual pins configuration
 cells=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14"]
 cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15"]
+cell_date[]
 missing="V16"
 missing_cells="V17"
 # Initialize Pins
@@ -131,6 +132,8 @@ def blynk_read(pin):
         print("Blynk read error:", e)
         return None
 def check_expire:
+    for date in cell_date:
+        if date>
 
 # Main loop
 def main():
