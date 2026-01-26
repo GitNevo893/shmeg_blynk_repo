@@ -86,13 +86,13 @@ READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
 # Blynk virtual pins configuration
 cells=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14"]
 cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15"]
-cell_date[]
+cell_date[0, 0, 0, 0, 0, 0, 0, 0, 0]
 missing="V16"
 missing_cells="V17"
+updates="V18"
 # Initialize Pins
 LED_PIN="LED"  
 led=Pin("LED", Pin.OUT)
-
 # Connect to Wi-Fi
 def connect_wifi():
     wlan = network.WLAN(network.STA_IF)
@@ -131,9 +131,53 @@ def blynk_read(pin):
     except Exception as e:
         print("Blynk read error:", e)
         return None
+def read_updates():
+    new_content=""
+    new_date=()
+    delete=False
+    cell_num=0
+    update=blynk_read(updates)
+    update=update.strip(" ")
+    update=update.split(",")
+    cell_num=int(update[0])
+    if update[1]=="update":
+        delete=False
+    elif update[1]=="change":
+        delete=True
+    else
+        print("invalid request")
+        return
+    if update[2]=="content":
+        new_content=update[4]
+        if delete:
+            blynk_write(cell_content[cell_num], new_content)
+        else:
+            old_content=blynk_read(cell_content[cell_num])
+            blynk_write(cell_content[cell_num], old_content+", "+new_content)
+    elif update[2]=="date":
+        for i in range(3,8):
+            new_date=new_date+(int(update[i]),)
+        new_date=new_date+(0,)
+        new_date=new_date+(0,)
+        new_date=new_date+(-1,)
+        if delete:
+            blynk_write(cell_date[cell_num], new_date)
+        old_date=blynk_read(cell_date[cell_num])
+        t_new=time.mktime(new_date)
+        t_old=time.mktime(old_date)
+        t=t_old+t_new
+        blynk_write(cell_date[cell_num], time.gmtime(t))
+    else:
+        print("invalid request")
+        return
+        print("update succeful!")
 def check_expire:
+    epoch_time=time.time()
+    real_time=time.gmtime()
     for date in cell_date:
-        if date>
+        if date=0:
+            print("no expired date")
+        elif date
 
 # Main loop
 def main():
