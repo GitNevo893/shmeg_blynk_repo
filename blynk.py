@@ -14,26 +14,21 @@ class I2cLcd:
         self.backlight = 0x08  # Backlight on
         self.row_offsets = [0x00, 0x40]  # 2-row LCD
         self._init_lcd()
-
     def _write_byte(self, data):
         self.i2c.writeto(self.i2c_addr, bytes([data | self.backlight]))
-
     def _pulse_enable(self, data):
         self._write_byte(data | 0x04)  # Enable high
         time.sleep_ms(1)
         self._write_byte(data & ~0x04) # Enable low
         time.sleep_ms(1)
-
     def _write4bits(self, data):
         self._write_byte(data)
         self._pulse_enable(data)
-
     def _send(self, value, mode=0):
         high = value & 0xF0
         low = (value << 4) & 0xF0
         self._write4bits(high | mode)
         self._write4bits(low | mode)
-
     def _init_lcd(self):
         time.sleep_ms(50)
         self._write4bits(0x30)
@@ -42,7 +37,6 @@ class I2cLcd:
         time.sleep_ms(1)
         self._write4bits(0x30)
         self._write4bits(0x20)  # 4-bit mode
-
         # Function set: 2 lines, 5x8 dots
         self._send(0x28)
         # Display on, cursor off
@@ -51,22 +45,17 @@ class I2cLcd:
         self.clear()
         # Entry mode
         self._send(0x06)
-
     def clear(self):
         self._send(0x01)
         time.sleep_ms(2)
-
     def move_to(self, col, row):
         if row >= self.num_lines:
             row = self.num_lines - 1
         addr = col + self.row_offsets[row]
         self._send(0x80 | addr)
-
     def putstr(self, string):
         for char in string:
             self._send(ord(char), mode=0x01)
-
-
 i2c=I2C(0, sda=Pin(0), scl=Pin(1), freq=100000)
 print(i2c.scan())
 I2C_ADDR = 0x27
@@ -162,15 +151,16 @@ def read_updates():
         new_date=new_date+(-1,)
         if delete:
             blynk_write(cell_date[cell_num], new_date)
-        old_date=blynk_read(cell_date[cell_num])
-        t_new=time.mktime(new_date)
-        t_old=time.mktime(old_date)
-        t=t_old+t_new
-        blynk_write(cell_date[cell_num], time.gmtime(t))
+        else:
+            old_date=blynk_read(cell_date[cell_num])
+            t_new=time.mktime(new_date)
+            t_old=time.mktime(old_date)
+            t=min(t_new, t_old)
+            blynk_write(cell_date[cell_num], time.gmtime(t))
     else:
         print("invalid request")
         return
-        print("update succeful!")
+    print("update succeful!")
 def check_expire:
     epoch_time=time.time()
     real_time=time.gmtime()
