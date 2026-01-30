@@ -161,18 +161,33 @@ def read_updates():
         print("invalid request")
         return
     print("update succeful!")
-def check_expire:
+def check_expire(cell_num):
+    time_expire=()
     epoch_time=time.time()
-    real_time=time.gmtime()
-    for date in cell_date:
-        if date=0:
-            print("no expired date")
-        elif date
+    date_expire=blynk_read(cell_date[cell_num])
+    if time_expire=="0":
+        print("no expired date")
+        return
+    date_expire=date_expire.strip(",")
+    date_expire=date_expire.split(",")
+    for i in range(0,6):
+        time_expire=time_expire+(int(date_expire[i]),)
+    time_expire=time_expire+(0,)
+    time_expire=time_expire+(0,)
+    time_expire=time_expire+(-1,)
+    time_expire=mktime(time_expire)
+    if time_expire>epoch_time:
+        print("still good!")
+    else:
+        print("oh oh")
+        blynk_write(missing, 1)
+        blynk_write(missing_cells, blynk_read(missing_cells)+", "+str(cell_num))
+def check_all():
+    for cell in range(1, len(cells)):
+        check_expire(cell)
 
 # Main loop
 def main():
     connect_wifi()
-    while True:
-        blynk_read(cells[1])
 main()
 
