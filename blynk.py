@@ -75,7 +75,7 @@ READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
 # Blynk virtual pins configuration
 cells=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14"]
 cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15"]
-cell_date=[0, 0, 0, 0, 0, 0, 0, 0, 0]
+cell_date=[0, "V19", "V20", "V21", "V22", "V23", "V24", "V25", "V26"]
 missing="V16"
 missing_cells="V17"
 updates="V18"
