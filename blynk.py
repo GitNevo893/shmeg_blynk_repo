@@ -65,10 +65,10 @@ lcd=I2cLcd(i2c, I2C_ADDR, ROWS, COLS)
 lcd.clear()
 
 # User configuration
-WIFI_SSID="WIFI_Hugim"
-WIFI_PASSWORD="H@340208"
 WIFI_SSID="Awesome"
 WIFI_PASSWORD="pr14052008"
+WIFI_SSID="WIFI_Hugim"
+WIFI_PASSWORD="H@123456"
 BLYNK_AUTH="fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
 WRITE_URL=f"https://blynk.cloud/external/api/update?token={BLYNK_AUTH}"
 READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
@@ -120,6 +120,13 @@ def blynk_read(pin):
     except Exception as e:
         print("Blynk read error:", e)
         return None
+    
+def make_str(time):
+    string=""
+    for i in time:
+        string=string+str(i)+","
+    return string
+        
 def read_updates():
     new_content=""
     new_date=()
@@ -133,6 +140,7 @@ def read_updates():
     for i in range(len(update)):
         update.append(update[0].strip(" "))
         update.pop(0)
+    print(update)
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
@@ -155,13 +163,16 @@ def read_updates():
         new_date=new_date+(0,)
         new_date=new_date+(-1,)
         if delete:
-            blynk_write(cell_date[cell_num], new_date)
+            date_str=make_str(new_date)
+            blynk_write(cell_date[cell_num], date_str)
         else:
             old_date=blynk_read(cell_date[cell_num])
             t_new=time.mktime(new_date)
             t_old=time.mktime(old_date)
             t=min(t_new, t_old)
-            blynk_write(cell_date[cell_num], time.gmtime(t))
+            t=time.gmtime(t)
+            date_str=make_str(t)
+            blynk_write(cell_date[cell_num], date_str)
     else:
         print("invalid request")
         return
@@ -182,13 +193,13 @@ def check_expire(cell_num):
     time_expire=time_expire+(0,)
     time_expire=time_expire+(0,)
     time_expire=time_expire+(-1,)
-    time_expire=mktime(time_expire)
+    time_expire=time.mktime(time_expire)
     if time_expire>epoch_time:
         print("still good!")
     else:
         print("oh oh")
         blynk_write(missing, 1)
-        blynk_write(missing_cells, blynk_read(missing_cells)+", "+str(cell_num))
+        blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
 def check_all():
     for cell in range(1, len(cells)):
         check_expire(cell)
@@ -197,5 +208,4 @@ def check_all():
 def main():
     connect_wifi()
     while True:
-        update=read_updates()
 main()
