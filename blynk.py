@@ -75,7 +75,7 @@ READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
 # Blynk virtual pins configuration
 cells=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14"]
 cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15"]
-cell_date[0, 0, 0, 0, 0, 0, 0, 0, 0]
+cell_date=[0, 0, 0, 0, 0, 0, 0, 0, 0]
 missing="V16"
 missing_cells="V17"
 updates="V18"
@@ -95,14 +95,14 @@ def connect_wifi():
             time.sleep(0.25)
             led.value(0)
             time.sleep(0.25)
-            lcd.putstr(".")
+            #lcd.putstr(".")
     print("Connected:", wlan.ifconfig())
 # Send value to widget in Blynk
 def blynk_write(pin, value):
-    url=f"{WRITE_URL}&{pin}={value}"
+    url = f"{WRITE_URL}&{pin}={value}"
     print("URL:", url)
     try:
-        r=urequests.get(url)
+        r = urequests.get(url)
         r.close()
         print(f"Sent {value} → {pin}")
     except Exception as e:
@@ -110,7 +110,7 @@ def blynk_write(pin, value):
 # Get the current value of widget from Blynk
 def blynk_read(pin):
     url=f"{READ_URL}&{pin}"
-    print("Reading:", url)
+    #print("Reading:", url)
     try:
         r=urequests.get(url)
         print("RAW:", r.text)
@@ -126,23 +126,28 @@ def read_updates():
     delete=False
     cell_num=0
     update=blynk_read(updates)
+    if update[0]=="0":
+        return
     update=update.strip(" ")
     update=update.split(",")
+    for i in range(len(update)):
+        update.append(update[0].strip(" "))
+        update.pop(0)
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
     elif update[1]=="change":
         delete=True
-    else
+    else:
         print("invalid request")
         return
     if update[2]=="content":
-        new_content=update[4]
+        new_content=update[3]
         if delete:
             blynk_write(cell_content[cell_num], new_content)
         else:
             old_content=blynk_read(cell_content[cell_num])
-            blynk_write(cell_content[cell_num], old_content+", "+new_content)
+            blynk_write(cell_content[cell_num], old_content+","+new_content)
     elif update[2]=="date":
         for i in range(3,8):
             new_date=new_date+(int(update[i]),)
@@ -161,6 +166,8 @@ def read_updates():
         print("invalid request")
         return
     print("update succeful!")
+    return update
+
 def check_expire(cell_num):
     time_expire=()
     epoch_time=time.time()
@@ -189,5 +196,6 @@ def check_all():
 # Main loop
 def main():
     connect_wifi()
+    while True:
+        update=read_updates()
 main()
-
