@@ -166,7 +166,15 @@ def read_updates():
             date_str=make_str(new_date)
             blynk_write(cell_date[cell_num], date_str)
         else:
-            old_date=blynk_read(cell_date[cell_num])
+            old_update=blynk_read(cell_date[cell_num])
+            print(old_update)
+            old_update=str(old_update)
+            old_update=old_update.split(",")
+            for i in range(3,8):
+                old_date=new_date+(int(old_update[i]),)
+                old_date=new_date+(0,)
+                old_date=new_date+(0,)
+                old_date=new_date+(-1,)
             t_new=time.mktime(new_date)
             t_old=time.mktime(old_date)
             t=min(t_new, t_old)
@@ -180,10 +188,9 @@ def read_updates():
     return update
 
 def check_expire(cell_num):
-    time_expire=()
     epoch_time=time.time()
     date_expire=blynk_read(cell_date[cell_num])
-    if time_expire=="0":
+    if date_expire=="":
         print("no expired date")
         return
     date_expire=date_expire.strip(",")
@@ -206,6 +213,5 @@ def check_all():
 
 # Main loop
 def main():
-    connect_wifi()
-    while True:
+    check_all()
 main()
