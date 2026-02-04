@@ -168,6 +168,10 @@ def read_updates():
         else:
             old_update=blynk_read(cell_date[cell_num])
             print(old_update)
+            if old_update=="":
+                date_str=make_str(new_date)
+                blynk_write(cell_date[cell_num], date_str)
+                return
             old_update=str(old_update)
             old_update=old_update.split(",")
             for i in range(3,8):
