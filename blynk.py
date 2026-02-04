@@ -188,7 +188,7 @@ def read_updates():
     else:
         print("invalid request")
         return
-    print("update succeful!")
+    print("update succeful! "+update[1]+"d cell "+update[0],"' "+update[2])
     return update
 
 def check_expire(cell_num):
