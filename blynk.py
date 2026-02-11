@@ -129,7 +129,9 @@ def make_str(time):
         
 def read_updates():
     new_content=""
+    old_content=""
     new_date=()
+    old_date=()
     delete=False
     cell_num=0
     update=blynk_read(updates)
@@ -154,8 +156,20 @@ def read_updates():
         if delete:
             blynk_write(cell_content[cell_num], new_content)
         else:
-            old_content=blynk_read(cell_content[cell_num])
-            blynk_write(cell_content[cell_num], old_content+","+new_content)
+            try:
+                old_content=blynk_read(cell_content[cell_num])
+                old_content=old_content.strip(" ")
+                old_content=uold_content.split(",")
+                for item in content:
+                    if new_content==item:
+                        print("already in content")
+                        return
+                blynk_write(cell_content[cell_num], old_content+","+new_content)
+            except:
+                print("peleg dont forget to check this alright man")
+
+            except:
+                 blynk_write(cell_content[cell_num], new_content)            
     elif update[2]=="date":
         for i in range(3,8):
             new_date=new_date+(int(update[i]),)
@@ -166,25 +180,25 @@ def read_updates():
             date_str=make_str(new_date)
             blynk_write(cell_date[cell_num], date_str)
         else:
-            old_update=blynk_read(cell_date[cell_num])
-            print(old_update)
-            if old_update=="":
+            try:
+                old_update=blynk_read(cell_date[cell_num])
+                old_update=old_update.strip(" ")
+                old_update=old_update.split(",")
+                for i in range(3,8):
+                    old_date=new_date+(int(old_update[i]),)
+                old_date=old_date+(0,)
+                old_date=old_date+(0,)
+                old_date=old_date+(-1,)
+                t_new=time.mktime(new_date)
+                t_old=time.mktime(old_date)
+                t=min(t_new, t_old)
+                t=time.gmtime(t)
+                date_str=make_str(t)
+                blynk_write(cell_date[cell_num], date_str)
+            except:
                 date_str=make_str(new_date)
                 blynk_write(cell_date[cell_num], date_str)
                 return
-            old_update=str(old_update)
-            old_update=old_update.split(",")
-            for i in range(3,8):
-                old_date=new_date+(int(old_update[i]),)
-                old_date=new_date+(0,)
-                old_date=new_date+(0,)
-                old_date=new_date+(-1,)
-            t_new=time.mktime(new_date)
-            t_old=time.mktime(old_date)
-            t=min(t_new, t_old)
-            t=time.gmtime(t)
-            date_str=make_str(t)
-            blynk_write(cell_date[cell_num], date_str)
     else:
         print("invalid request")
         return
@@ -211,11 +225,24 @@ def check_expire(cell_num):
         print("oh oh")
         blynk_write(missing, 1)
         blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
+        
 def check_all():
     for cell in range(1, len(cells)):
         check_expire(cell)
 
+def is_on():
+    command=blynk_read(updates)
+    if command=="off":
+        return False
+    elif command=="on":
+        return True
+    else:
+        return
+
 # Main loop
 def main():
-    check_all()
+    while True:
+        if is_on():
+            read_updates()
+            sleep(0.5)
 main()
