@@ -253,6 +253,7 @@ def leds():
 
 # Main loop
 def main():
+    connect_wifi()
     while True:
         is_on()
         if on:
