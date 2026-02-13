@@ -224,7 +224,11 @@ def check_expire(cell_num):
     else:
         print("oh oh")
         blynk_write(missing, 1)
-        blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
+        try:
+            blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
+        except:
+            blynk_write(missing_cells, str(cell_num))
+            
         
 def check_all():
     for cell in range(1, len(cells)):
