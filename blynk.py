@@ -227,7 +227,7 @@ def check_expire(cell_num):
             print("oh oh")
             is_missing=True
             blynk_write(missing, 1)
-            old=blynk_read(missing_cells[cell_num])
+            old=blynk_read(missing_cells)
             old=old.strip(" ")
             old=old.split(",")
             for cell in old:
