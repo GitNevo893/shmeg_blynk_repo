@@ -113,7 +113,6 @@ def blynk_read(pin):
     #print("Reading:", url)
     try:
         r=urequests.get(url)
-        print("RAW:", r.text)
         val = r.text
         r.close()
         return val
@@ -121,10 +120,12 @@ def blynk_read(pin):
         print("Blynk read error:", e)
         return None
     
-def make_str(time):
+def make_str(l1st):
     string=""
-    for i in time:
-        string=string+str(i)+","
+    for i in range(len(l1st)):
+        string=string+str(l1st[i])
+        if i<(len(l1st)-1):
+            string=string+","
     return string
         
 def read_updates():
@@ -135,14 +136,14 @@ def read_updates():
     delete=False
     cell_num=0
     update=blynk_read(updates)
-    if update[0]=="0":
-        return
     update=update.strip(" ")
     update=update.split(",")
     for i in range(len(update)):
         update.append(update[0].strip(" "))
         update.pop(0)
     print(update)
+    if update[0]=="0" or update[0]=="on" or update[0]=="off":
+        return
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
@@ -159,17 +160,15 @@ def read_updates():
             try:
                 old_content=blynk_read(cell_content[cell_num])
                 old_content=old_content.strip(" ")
-                old_content=uold_content.split(",")
-                for item in content:
+                old_content=old_content.split(",")
+                for item in old_content:
                     if new_content==item:
                         print("already in content")
                         return
-                blynk_write(cell_content[cell_num], old_content+","+new_content)
+                blynk_write(cell_content[cell_num], make_str(old_content)+","+new_content)
             except:
                 print("peleg dont forget to check this alright man")
-
-            except:
-                 blynk_write(cell_content[cell_num], new_content)            
+                blynk_write(cell_content[cell_num], new_content)            
     elif update[2]=="date":
         for i in range(3,8):
             new_date=new_date+(int(update[i]),)
@@ -206,33 +205,48 @@ def read_updates():
     return update
 
 def check_expire(cell_num):
+    global is_missing
+    time_expire=()
     epoch_time=time.time()
     date_expire=blynk_read(cell_date[cell_num])
-    if date_expire=="":
+    if date_expire=="" or date_expire=="0":
         print("no expired date")
         return
-    date_expire=date_expire.strip(",")
-    date_expire=date_expire.split(",")
-    for i in range(0,6):
-        time_expire=time_expire+(int(date_expire[i]),)
-    time_expire=time_expire+(0,)
-    time_expire=time_expire+(0,)
-    time_expire=time_expire+(-1,)
-    time_expire=time.mktime(time_expire)
-    if time_expire>epoch_time:
-        print("still good!")
-    else:
-        print("oh oh")
-        blynk_write(missing, 1)
-        try:
+    try:
+        date_expire=date_expire.strip(",")
+        date_expire=date_expire.split(",")
+        for i in range(0,6):
+            time_expire=time_expire+(int(date_expire[i]),)
+        time_expire=time_expire+(0,)
+        time_expire=time_expire+(0,)
+        time_expire=time_expire+(-1,)
+        time_expire=time.mktime(time_expire)
+        if time_expire>epoch_time:
+            print("still good!")
+        else:
+            print("oh oh")
+            is_missing=True
+            blynk_write(missing, 1)
+            old=blynk_read(missing_cells[cell_num])
+            old=old.strip(" ")
+            old=old.split(",")
+            for cell in old:
+                if str(cell_num)==cell:
+                    print("already missing")
+                    return
             blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
-        except:
-            blynk_write(missing_cells, str(cell_num))
-            
+    except:
+        print("nah")
         
 def check_all():
-    for cell in range(1, len(cells)):
+    global is_missing
+    for cell in range(1, len(cell_date)):
         check_expire(cell)
+    if is_missing:
+        blynk_write(missing, 1)
+    else:
+        blynk_write(missing, 0)
+        
 on=False
 def is_on():
     global on
@@ -243,12 +257,12 @@ def is_on():
         on=True
     else:
         return
-def light(cell_num, value):
+#def light(cell_num, value):
     #cell_pin[cell_num].value()
-def leds():
-    value=0
-    for cell in range(cell_led):
-        value=blynk_read(cell_led[cell])
+#def leds():
+    #value=0
+    #for cell in range(cell_led):
+        #value=blynk_read(cell_led[cell])
         #light(cell, value)
 
 # Main loop
@@ -256,7 +270,8 @@ def main():
     connect_wifi()
     while True:
         is_on()
-        if on:
+        if True:
             read_updates()
-        sleep(0.5)
+            check_all()
+        time.sleep(0.5)
 main()
