@@ -73,9 +73,9 @@ BLYNK_AUTH="fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
 WRITE_URL=f"https://blynk.cloud/external/api/update?token={BLYNK_AUTH}"
 READ_URL=f"https://blynk.cloud/external/api/get?token={BLYNK_AUTH}"
 # Blynk virtual pins configuration
-cells=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14"]
-cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15"]
-cell_date=[0, "V19", "V20", "V21", "V22", "V23", "V24", "V25", "V26"]
+cell_led=[0, "V0", "V2", "V4", "V6", "V8", "V10", "V12", "V14", "V27"]
+cell_content=[0, "V1", "V3", "V5", "V7", "V9", "V11", "V13", "V15", "V28"]
+cell_date=[0, "V19", "V20", "V21", "V22", "V23", "V24", "V25", "V26", "V29"]
 missing="V16"
 missing_cells="V17"
 updates="V18"
@@ -229,20 +229,29 @@ def check_expire(cell_num):
 def check_all():
     for cell in range(1, len(cells)):
         check_expire(cell)
-
+on=False
 def is_on():
+    global on
     command=blynk_read(updates)
     if command=="off":
-        return False
+        on=False
     elif command=="on":
-        return True
+        on=True
     else:
         return
+def light(cell_num, value):
+    #cell_pin[cell_num].value()
+def leds():
+    value=0
+    for cell in range(cell_led):
+        value=blynk_read(cell_led[cell])
+        #light(cell, value)
 
 # Main loop
 def main():
     while True:
-        if is_on():
+        is_on()
+        if on:
             read_updates()
-            sleep(0.5)
+        sleep(0.5)
 main()
