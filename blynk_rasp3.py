@@ -187,10 +187,14 @@ def is_on():
 
 # Main loop
 def main():
-    while True:
-        is_on()
-        if True:
-            read_updates()
-            check_all()
-        time.sleep(0.5)
-main()
+    is_on()
+    if True:
+        read_updates()
+        check_all()
+    time.sleep(0.5)
+while True:
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Program stopped")
+        break
