@@ -1,7 +1,7 @@
 import time
 import requests
 from gpiozero import LED, Button, MCP3008
-from smbus2 import SMBus
+#from smbus2 import SMBus
 
 # User configuration
 WIFI_SSID="Awesome"
