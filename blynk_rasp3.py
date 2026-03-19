@@ -90,8 +90,10 @@ def read_updates():
                 print("peleg dont forget to check this alright man")
                 blynk_write(cell_content[cell_num], new_content)            
     elif update[2]=="date":
-        for i in range(3,8):
+        for i in range(3,6):
             new_date=new_date+(int(update[i]),)
+        new_date=new_date+(0,)
+        new_date=new_date+(0,)
         new_date=new_date+(0,)
         new_date=new_date+(0,)
         new_date=new_date+(-1,)
@@ -103,8 +105,10 @@ def read_updates():
                 old_update=blynk_read(cell_date[cell_num])
                 old_update=old_update.strip(" ")
                 old_update=old_update.split(",")
-                for i in range(3,8):
+                for i in range(3,6):
                     old_date=new_date+(int(old_update[i]),)
+                old_date=old_date+(0,)
+                old_date=old_date+(0,)
                 old_date=old_date+(0,)
                 old_date=old_date+(0,)
                 old_date=old_date+(-1,)
