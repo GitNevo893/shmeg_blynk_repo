@@ -23,7 +23,7 @@ def write_line(text, line=1):
     for ch in text:
         send(ord(ch), 1)
 def scroll_line(text, line=1, delay=0.3):
-    text = text + " " * 16
+    #text = text + " " * 16
     for i in range(len(text) - 15):
         if line==1:
             send(0x80)
