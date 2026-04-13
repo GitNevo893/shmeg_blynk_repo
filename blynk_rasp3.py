@@ -1,4 +1,5 @@
 import time
+import smbus
 import requests
 from gpiozero import LED, Button, MCP3008
 #from smbus2 import SMBus
