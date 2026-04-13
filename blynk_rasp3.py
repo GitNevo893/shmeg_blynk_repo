@@ -36,7 +36,7 @@ def send(x, mode=0):
 def init_lcd():
     for c in [0x33, 0x32, 0x28, 0x0C, 0x01]:
         send(c)
-        sleep(0.005)
+        time.sleep(0.005)
 def write_line(text, line=1):
     if line==1:
         send(0x80)
@@ -53,7 +53,7 @@ def scroll_line(text, line=1, delay=0.3):
         window = text[i:i+16]
         for ch in window:
             send(ord(ch), 1)
-        sleep(delay)
+        time.sleep(delay)
 init_lcd()
 def message(line1, line2):
     write_line(line1, 1)
