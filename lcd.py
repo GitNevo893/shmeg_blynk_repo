@@ -13,5 +13,5 @@ def send(x, mode=0):
 for c in [0x33,0x32,0x28,0x0C,0x01]:
     send(c); sleep(0.005)
 # print text
-for ch in "hi nevo":
+for ch in "c=8":
     send(ord(ch), 1)
