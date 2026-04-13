@@ -20,7 +20,7 @@ def write_line(text, line=1):
         send(0x80)
     else:
         send(0xC0)
-    for ch in message:
+    for ch in text:
         send(ord(ch), 1)
 def scroll_line(text, line=1, delay=0.3):
     text = text + " " * 16
