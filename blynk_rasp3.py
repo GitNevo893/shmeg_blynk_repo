@@ -56,12 +56,13 @@ def scroll_line(text, line=1, delay=0.3):
         time.sleep(delay)
 init_lcd()
 def message(line1, line2):
+    write_line("                ", 1)
+    write_line("                ", 2)
     write_line(line1, 1)
     if len(line2)<=16:
         write_line(line2, 2)
     else:
         scroll_line(line2, 2, 0.3)
-message("yo world","aaaaaaahhhh help me heeeeelp aaaaaaaaaa")
 
 # Send value to widget in Blynk
 def blynk_write(pin, value):
