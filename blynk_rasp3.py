@@ -183,8 +183,10 @@ def check_expire(cell_num):
     try:
         date_expire=date_expire.strip(",")
         date_expire=date_expire.split(",")
-        for i in range(0,6):
+        for i in range(0,4):
             time_expire=time_expire+(int(date_expire[i]),)
+        time_expire=time_expire+(0,)
+        time_expire=time_expire+(0,)
         time_expire=time_expire+(0,)
         time_expire=time_expire+(0,)
         time_expire=time_expire+(-1,)
