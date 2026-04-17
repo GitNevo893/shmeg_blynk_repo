@@ -197,12 +197,12 @@ def check_expire(cell_num):
             old=blynk_read(missing_cells)
             old=old.strip(" ")
             old=old.split(",")
+            message("missing items in:", blynk_read(missing_cells))
             for cell in old:
                 if str(cell_num)==cell:
                     print("already missing")
                     return
             blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
-            message("missing items in:", blynk_read(missing_cells))
     except:
         print("nah")
         
