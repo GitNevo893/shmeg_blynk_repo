@@ -189,15 +189,19 @@ def check_expire(cell_num):
         time_expire=time_expire+(0,)
         time_expire=time_expire+(-1,)
         time_expire=time.mktime(time_expire)
+        old=blynk_read(missing_cells)
+        old=old.strip(" ")
+        old=old.split(",")
         if time_expire>epoch_time:
             print("still good!")
+            if cell_num in old:
+                old.remove(cell_num)
+                for cell in old:
+                    blynk_write(missing_cells, cell)
         else:
             print("oh oh")
             is_missing=True
             blynk_write(missing, 1)
-            old=blynk_read(missing_cells)
-            old=old.strip(" ")
-            old=old.split(",")
             message("missing items in:", blynk_read(missing_cells))
             for cell in old:
                 if str(cell_num)==cell:
