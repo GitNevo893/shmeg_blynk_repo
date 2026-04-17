@@ -109,6 +109,7 @@ def read_updates():
         return
     if update[0]=="write":
         message("from blynk:", update[1])
+        return
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
