@@ -41,7 +41,8 @@ def message(line1, line2):
     else:
         scroll_line(line2, 2, 0.3)
 message("yo world","aaaaaaahhhh help me heeeeelp aaaaaaaaaa")
-    
+sleep(5)
+message("hi nevo", "i hope you are having a wondeful daHELP ME HELP HELP HELP ME HEEEELP")   
         
 
     
