@@ -100,7 +100,6 @@ def read_updates():
     delete=False
     cell_num=0
     update=blynk_read(updates)
-    update=update.strip(" ")
     update=update.split(",")
     for i in range(len(update)):
         update.append(update[0].strip(" "))
@@ -108,6 +107,9 @@ def read_updates():
     print(update)
     if update[0]=="0" or update[0]=="on" or update[0]=="off":
         return
+    if update[0]=="write""
+        message("from blynk:", update[1])
+    update=update.strip(" ")
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
