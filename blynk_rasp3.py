@@ -90,6 +90,47 @@ def make_str(l1st):
         if i<(len(l1st)-1):
             string=string+","
     return string
+
+def check_expire(cell_num):
+    time_expire=()
+    epoch_time=time.time()
+    date_expire=blynk_read(cell_date[cell_num])
+    if date_expire=="" or date_expire=="0":
+        print("cell ", cell_num, " has no expired date")
+        return
+    date_expire=date_expire.strip(",")
+    date_expire=date_expire.split(",")
+    for i in range(3):
+        time_expire=time_expire+(int(date_expire[i]),)
+    for i in range(5):
+        time_expire=time_expire+(0,)
+    time_expire=time_expire+(-1,)
+    print(time_expire)
+    time_expire=time.mktime(time_expire)
+    old=blynk_read(missing_cells)
+    old=old.strip(" ")
+    old=old.split(",")
+    if time_expire>epoch_time:
+        print("items in cell ", cell_num, " are still good!")
+        if cell_num in old:
+            old.remove(cell_num)
+        blynk_write(missing_cells, make_str(old))
+    else:
+        print("item expired in cell ", cell_num)
+        for cell in old:
+            if str(cell_num)==cell:
+                print("already missing")
+                return
+        blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
+        message("missing items in:", blynk_read(missing_cells))
+        
+def check_all():
+    for cell in range(1, len(cell_date)):
+        check_expire(cell)
+    if blynk_read(missing_cells)=="":
+        blynk_write(missing, 0)
+    else:
+        blynk_write(missing, 1)
         
 def read_updates():
     new_content=""
@@ -110,6 +151,8 @@ def read_updates():
     if update[0]=="write":
         message("from blynk:", update[1])
         return
+    if update[0]=="check":
+        check_all()
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
@@ -170,46 +213,7 @@ def read_updates():
     print("update succeful! "+update[1]+"d cell "+update[0],"' "+update[2])
     return update
 
-def check_expire(cell_num):
-    time_expire=()
-    epoch_time=time.time()
-    date_expire=blynk_read(cell_date[cell_num])
-    if date_expire=="" or date_expire=="0":
-        print("cell ", cell_num, " has no expired date")
-        return
-    date_expire=date_expire.strip(",")
-    date_expire=date_expire.split(",")
-    for i in range(3):
-        time_expire=time_expire+(int(date_expire[i]),)
-    for i in range(5):
-        time_expire=time_expire+(0,)
-    time_expire=time_expire+(-1,)
-    print(time_expire)
-    time_expire=time.mktime(time_expire)
-    old=blynk_read(missing_cells)
-    old=old.strip(" ")
-    old=old.split(",")
-    if time_expire>epoch_time:
-        print("items in cell ", cell_num, " are still good!")
-        if cell_num in old:
-            old.remove(cell_num)
-        blynk_write(missing_cells, make_str(old))
-    else:
-        print("item expired in cell ", cell_num)
-        for cell in old:
-            if str(cell_num)==cell:
-                print("already missing")
-                return
-        blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
-        message("missing items in:", blynk_read(missing_cells))
-        
-def check_all():
-    for cell in range(1, len(cell_date)):
-        check_expire(cell)
-    if blynk_read(missing_cells)=="":
-        blynk_write(missing, 0)
-    else:
-        blynk_write(missing, 1)
+
 on=False
 def is_on():
     global on
@@ -234,7 +238,6 @@ def main():
     is_on()
     if True:
         read_updates()
-        check_all()
     time.sleep(0.5)
 while True:
     try:
