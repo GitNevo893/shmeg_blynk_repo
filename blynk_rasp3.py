@@ -88,7 +88,7 @@ def make_str(l1st):
     string=""
     for i in range(len(l1st)):
         string=string+str(l1st[i])
-        if i<(len(l1st)-1):
+        if i<(len(l1st)-1) and i>0:
             string=string+","
     return string
         
@@ -196,13 +196,12 @@ def check_expire(cell_num):
         blynk_write(missing_cells, make_str(old))
     else:
         print("item expired in cell ", cell_num)
-        is_missing=True
-        message("missing items in:", blynk_read(missing_cells))
         for cell in old:
             if str(cell_num)==cell:
                 print("already missing")
                 return
         blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
+        message("missing items in:", blynk_read(missing_cells))
         
 def check_all():
     for cell in range(1, len(cell_date)):
