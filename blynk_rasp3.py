@@ -78,7 +78,7 @@ def blynk_read(pin):
     url = f"{READ_URL}&{pin}"
     try:
         r = requests.get(url, timeout=5)
-        r.text.strip()
+        return r.text.strip()
     except Exception as e:
         print("Blynk read error:", e)
         return None
