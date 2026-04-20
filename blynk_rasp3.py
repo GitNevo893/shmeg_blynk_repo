@@ -153,6 +153,7 @@ def read_updates():
         return
     if update[0]=="check":
         check_all()
+        return
     cell_num=int(update[0])
     if update[1]=="update":
         delete=False
