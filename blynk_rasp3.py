@@ -142,10 +142,8 @@ def read_updates():
             date_str=make_str(new_date)
             blynk_write(cell_date[cell_num], date_str)
         else:
-            new_date=new_date+(0,)
-            new_date=new_date+(0,)
-            new_date=new_date+(0,)
-            new_date=new_date+(0,)
+            for i in range(5):
+                time_expire=time_expire+(0,)
             new_date=new_date+(-1,)
             try:
                 old_update=blynk_read(cell_date[cell_num])
@@ -153,10 +151,8 @@ def read_updates():
                 old_update=old_update.split(",")
                 for i in range(3,6):
                     old_date=new_date+(int(old_update[i]),)
-                old_date=old_date+(0,)
-                old_date=old_date+(0,)
-                old_date=old_date+(0,)
-                old_date=old_date+(0,)
+                for i in range(5):
+                    time_expire=time_expire+(0,)
                 old_date=old_date+(-1,)
                 t_new=time.mktime(new_date)
                 t_old=time.mktime(old_date)
@@ -186,10 +182,8 @@ def check_expire(cell_num):
     date_expire=date_expire.split(",")
     for i in range(3):
         time_expire=time_expire+(int(date_expire[i]),)
-    time_expire=time_expire+(0,)
-    time_expire=time_expire+(0,)
-    time_expire=time_expire+(0,)
-    time_expire=time_expire+(0,)
+    for i in range(5):
+        time_expire=time_expire+(0,)
     time_expire=time_expire+(-1,)
     print(time_expire)
     time_expire=time.mktime(time_expire)
