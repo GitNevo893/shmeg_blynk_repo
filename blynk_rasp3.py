@@ -194,7 +194,7 @@ def check_expire(cell_num):
         print("still good!")
         if cell_num in old:
             old.remove(cell_num)
-            blynk_write(missing_cells, make_str(old))
+        blynk_write(missing_cells, make_str(old))
     else:
         print("item expired")
         is_missing=True
@@ -241,6 +241,7 @@ def main():
         check_all()
     time.sleep(0.5)
 while True:
+    blynk_write(missing_cells,"") #TEMPORERY
     try:
         main()
     except KeyboardInterrupt:
