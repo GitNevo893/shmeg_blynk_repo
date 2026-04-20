@@ -191,12 +191,12 @@ def check_expire(cell_num):
     old=old.strip(" ")
     old=old.split(",")
     if time_expire>epoch_time:
-        print("still good!")
+        print("items in cell ", cell_num, " are still good!")
         if cell_num in old:
             old.remove(cell_num)
         blynk_write(missing_cells, make_str(old))
     else:
-        print("item expired")
+        print("item expired in cell ", cell_num)
         is_missing=True
         blynk_write(missing, 1)
         message("missing items in:", blynk_read(missing_cells))
