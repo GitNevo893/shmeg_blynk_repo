@@ -176,7 +176,7 @@ def check_expire(cell_num):
     epoch_time=time.time()
     date_expire=blynk_read(cell_date[cell_num])
     if date_expire=="" or date_expire=="0":
-        print("no expired date")
+        print("cell ", cell_num, " has no expired date")
         return
     date_expire=date_expire.strip(",")
     date_expire=date_expire.split(",")
