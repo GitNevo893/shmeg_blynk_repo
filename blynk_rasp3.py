@@ -67,7 +67,6 @@ def message(line1, line2):
 # Send value to widget in Blynk
 def blynk_write(pin, value):
     url = f"{WRITE_URL}&{pin}={value}"
-    print("URL:", url)
     try:
         r = requests.get(url, timeout=5)
         print(f"Sent {value} → {pin}")
@@ -79,7 +78,7 @@ def blynk_read(pin):
     url = f"{READ_URL}&{pin}"
     try:
         r = requests.get(url, timeout=5)
-        #return r.text.strip()
+        r.text.strip()
     except Exception as e:
         print("Blynk read error:", e)
         return None
