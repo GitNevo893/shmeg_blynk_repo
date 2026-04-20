@@ -182,37 +182,34 @@ def check_expire(cell_num):
     if date_expire=="" or date_expire=="0":
         print("no expired date")
         return
-    try:
-        date_expire=date_expire.strip(",")
-        date_expire=date_expire.split(",")
-        for i in range(0,3):
-            time_expire=time_expire+(int(date_expire[i]),)
-        time_expire=time_expire+(0,)
-        time_expire=time_expire+(0,)
-        time_expire=time_expire+(0,)
-        time_expire=time_expire+(0,)
-        time_expire=time_expire+(-1,)
-        time_expire=time.mktime(time_expire)
-        old=blynk_read(missing_cells)
-        old=old.strip(" ")
-        old=old.split(",")
-        if time_expire>epoch_time:
-            print("still good!")
-            if cell_num in old:
-                old.remove(cell_num)
-                blynk_write(make_str(old))
-        else:
-            print("item expired")
-            is_missing=True
-            blynk_write(missing, 1)
-            message("missing items in:", blynk_read(missing_cells))
-            for cell in old:
-                if str(cell_num)==cell:
-                    print("already missing")
-                    return
-            blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
-    except:
-        print("nah")
+    date_expire=date_expire.strip(",")
+    date_expire=date_expire.split(",")
+    for i in range(0,3):
+        time_expire=time_expire+(int(date_expire[i]),)
+    time_expire=time_expire+(0,)
+    time_expire=time_expire+(0,)
+    time_expire=time_expire+(0,)
+    time_expire=time_expire+(0,)
+    time_expire=time_expire+(-1,)
+    time_expire=time.mktime(time_expire)
+    old=blynk_read(missing_cells)
+    old=old.strip(" ")
+    old=old.split(",")
+    if time_expire>epoch_time:
+        print("still good!")
+        if cell_num in old:
+            old.remove(cell_num)
+            blynk_write(missing_cells, make_str(old))
+    else:
+        print("item expired")
+        is_missing=True
+        blynk_write(missing, 1)
+        message("missing items in:", blynk_read(missing_cells))
+        for cell in old:
+            if str(cell_num)==cell:
+                print("already missing")
+                return
+        blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
         
 def check_all():
     global is_missing
