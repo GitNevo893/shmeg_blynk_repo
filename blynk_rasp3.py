@@ -171,7 +171,6 @@ def read_updates():
     return update
 
 def check_expire(cell_num):
-    global is_missing
     time_expire=()
     epoch_time=time.time()
     date_expire=blynk_read(cell_date[cell_num])
@@ -198,7 +197,6 @@ def check_expire(cell_num):
     else:
         print("item expired in cell ", cell_num)
         is_missing=True
-        blynk_write(missing, 1)
         message("missing items in:", blynk_read(missing_cells))
         for cell in old:
             if str(cell_num)==cell:
@@ -207,14 +205,12 @@ def check_expire(cell_num):
         blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
         
 def check_all():
-    global is_missing
     for cell in range(1, len(cell_date)):
         check_expire(cell)
-    if is_missing:
-        blynk_write(missing, 1)
-    else:
+    if blynk_read(missing_cells)=="":
         blynk_write(missing, 0)
-        
+    else:
+        blynk_write(missing, 1)
 on=False
 def is_on():
     global on
