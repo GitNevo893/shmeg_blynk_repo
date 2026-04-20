@@ -247,7 +247,7 @@ def main():
     is_on()
     if True:
         read_updates()
-        check_all()
+        check_expire(9)
     time.sleep(0.5)
 while True:
     try:
