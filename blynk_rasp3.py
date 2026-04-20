@@ -234,6 +234,7 @@ def is_on():
         #light(cell, value)
 
 # Main loop
+blynk_write(missing_cells,"") #TEMPORERY
 def main():
     is_on()
     if True:
@@ -241,7 +242,6 @@ def main():
         check_all()
     time.sleep(0.5)
 while True:
-    blynk_write(missing_cells,"") #TEMPORERY
     try:
         main()
     except KeyboardInterrupt:
