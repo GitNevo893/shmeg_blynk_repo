@@ -162,7 +162,6 @@ def read_updates():
                 t_old=time.mktime(old_date)
                 t=min(t_new, t_old)
                 t=time.gmtime(t)
-                print(t)
                 date_str=make_str(t)
                 blynk_write(cell_date[cell_num], date_str)
             except:
@@ -186,7 +185,7 @@ def check_expire(cell_num):
     try:
         date_expire=date_expire.strip(",")
         date_expire=date_expire.split(",")
-        for i in range(0,4):
+        for i in range(0,3):
             time_expire=time_expire+(int(date_expire[i]),)
         time_expire=time_expire+(0,)
         time_expire=time_expire+(0,)
@@ -201,8 +200,7 @@ def check_expire(cell_num):
             print("still good!")
             if cell_num in old:
                 old.remove(cell_num)
-                for cell in old:
-                    blynk_write(missing_cells, cell)
+                blynk_write(make_str(old))
         else:
             print("item expired")
             is_missing=True
