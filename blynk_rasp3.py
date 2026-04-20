@@ -88,7 +88,7 @@ def make_str(l1st):
     string=""
     for i in range(len(l1st)):
         string=string+str(l1st[i])
-        if i<(len(l1st)-1) and i>0:
+        if i<(len(l1st)-1):
             string=string+","
     return string
         
