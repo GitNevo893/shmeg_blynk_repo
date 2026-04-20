@@ -184,13 +184,14 @@ def check_expire(cell_num):
         return
     date_expire=date_expire.strip(",")
     date_expire=date_expire.split(",")
-    for i in range(0,3):
+    for i in range(3):
         time_expire=time_expire+(int(date_expire[i]),)
     time_expire=time_expire+(0,)
     time_expire=time_expire+(0,)
     time_expire=time_expire+(0,)
     time_expire=time_expire+(0,)
     time_expire=time_expire+(-1,)
+    print(time_expire)
     time_expire=time.mktime(time_expire)
     old=blynk_read(missing_cells)
     old=old.strip(" ")
