@@ -136,7 +136,7 @@ def read_updates():
                 print("peleg dont forget to check this alright man")
                 blynk_write(cell_content[cell_num], new_content)            
     elif update[2]=="date":
-        for i in range(3,6):
+        for i in range(3,5):
             new_date=new_date+(int(update[i]),)
         new_date=new_date+(0,)
         new_date=new_date+(0,)
@@ -151,7 +151,7 @@ def read_updates():
                 old_update=blynk_read(cell_date[cell_num])
                 old_update=old_update.strip(" ")
                 old_update=old_update.split(",")
-                for i in range(3,6):
+                for i in range(3,5):
                     old_date=new_date+(int(old_update[i]),)
                 old_date=old_date+(0,)
                 old_date=old_date+(0,)
@@ -203,7 +203,7 @@ def check_expire(cell_num):
                 for cell in old:
                     blynk_write(missing_cells, cell)
         else:
-            print("oh oh")
+            print("item expired")
             is_missing=True
             blynk_write(missing, 1)
             message("missing items in:", blynk_read(missing_cells))
