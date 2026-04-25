@@ -155,7 +155,7 @@ def read_updates():
         check_all()
         return
     cell_num=int(update[0])
-    if update[1]=="update":
+    if update[1]=="update" or update[1]=="change":
         delete=False
     elif update[1]=="change":
         delete=True
