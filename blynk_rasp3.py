@@ -1,7 +1,7 @@
 import time
 import smbus
 import requests
-from gpiozero import LED, Button, MCP3008
+from gpiozero import LED, Button
 #from smbus2 import SMBus
 
 # User configuration
@@ -20,7 +20,7 @@ missing="V16"
 missing_cells="V17"
 updates="V18"
 # Initialize Pins
-
+LED=[0]+[LED(pin) for pin in [4,17,27,22,23,24,25,5,6]]
 #Initialize LCD
 addr = 0x27
 bus = smbus.SMBus(1)
@@ -225,14 +225,19 @@ def is_on():
         on=True
     else:
         return
-#def light(cell_num, value):
-    #cell_pin[cell_num].value()
-#def leds():
-    #value=0
-    #for cell in range(cell_led):
-        #value=blynk_read(cell_led[cell])
-        #light(cell, value)
-
+def light(cell_num, value):
+    if value==1:
+        LED[cell_num].on
+    elif: value==0:
+        LED[cell_num].off
+    else:
+        print("invalid request")
+def read_leds():
+    for cell in cell_led:
+        try:
+            value=blynk_read(cell)
+            light(cell_led.index(cell), value)
+    
 # Main loop
 blynk_write(missing_cells,"") #TEMPORERY
 def main():
