@@ -237,6 +237,8 @@ def read_leds():
         try:
             value=blynk_read(cell)
             light(cell_led.index(cell), value)
+        finally:
+            return
     
 # Main loop
 blynk_write(missing_cells, " ")
