@@ -238,7 +238,7 @@ def light(cell_num, value):
 def read_leds():
     for cell in cell_led:
         try:
-            value=str(blynk_read(cell))
+            value=int(blynk_read(cell))
             print(value)
             light(cell_led.index(cell), value)
         except:
