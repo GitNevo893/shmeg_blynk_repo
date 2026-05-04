@@ -235,11 +235,11 @@ def light(cell_num, value):
 def read_leds():
     for cell in cell_led:
         try:
-            value=blynk_read(cell)
+            value=str(blynk_read(cell))
             print(value)
             light(cell_led.index(cell), value)
-        finally:
-            return
+        except:
+            print("")
     
 # Main loop
 blynk_write(missing_cells, " ")
