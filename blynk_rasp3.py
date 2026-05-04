@@ -239,7 +239,7 @@ def read_leds():
             light(cell_led.index(cell), value)
     
 # Main loop
-blynk_write(missing_cells,"")
+blynk_write(missing_cells, " ")
 def main():
     is_on()
     if True:
