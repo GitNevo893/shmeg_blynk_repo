@@ -226,9 +226,10 @@ def is_on():
     else:
         return
 def light(cell_num, value):
-    if value==1:
+    print("value issssss" , value)
+    if value==True:
         LED[cell_num].on
-    elif value==0:
+    elif value==False:
         LED[cell_num].off
     else:
         print("invalid request")
