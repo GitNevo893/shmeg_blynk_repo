@@ -244,6 +244,7 @@ def main():
     is_on()
     if True:
         read_updates()
+        read_leds()
     time.sleep(0.5)
 while True:
     try:
