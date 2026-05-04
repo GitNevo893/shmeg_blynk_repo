@@ -21,9 +21,9 @@ missing_cells="V17"
 updates="V18"
 # Initialize Pins
 LED=[0]+[LED(pin) for pin in [4,17,27,22,23,24,25,5,6]]
-LED[1].on
+LED[1].on()
 time.sleep(10)
-LED[1].off
+LED[1].off()
 #Initialize LCD
 addr = 0x27
 bus = smbus.SMBus(1)
@@ -230,9 +230,9 @@ def is_on():
         return
 def light(cell_num, value):
     if value==1:
-        LED[cell_num].on
+        LED[cell_num].on()
     elif value==0:
-        LED[cell_num].off
+        LED[cell_num].off()
     else:
         print("invalid request")
 def read_leds():
