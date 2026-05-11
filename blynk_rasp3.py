@@ -189,22 +189,23 @@ def read_updates():
             blynk_write(cell_date[cell_num], date_str)
         else:
             for i in range(5):
-                time_expire=time_expire+(0,)
+                new_date=new_date+(0,)
             new_date=new_date+(-1,)
             try:
                 old_update=blynk_read(cell_date[cell_num])
                 old_update=old_update.strip(" ")
                 old_update=old_update.split(",")
                 for i in range(3,6):
-                    old_date=new_date+(int(old_update[i]),)
+                    old_date=old_date+(int(old_update[i]),)
                 for i in range(5):
-                    time_expire=time_expire+(0,)
+                    old_date=old_date+(0,)
                 old_date=old_date+(-1,)
                 t_new=time.mktime(new_date)
                 t_old=time.mktime(old_date)
                 t=min(t_new, t_old)
                 t=time.gmtime(t)
-                date_str=make_str(t)
+                for i in t:
+                    date_str=date_str+str(i)+","
                 blynk_write(cell_date[cell_num], date_str)
             except:
                 date_str=make_str(new_date)
