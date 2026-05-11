@@ -113,15 +113,16 @@ def check_expire(cell_num):
             old.remove(str(cell_num))
     else:
         print("item expired in cell ", cell_num)
+        print(old)
+        if len(old)==0:
+            blynk_write(missing, 0)
         for cell in old:
             if str(cell_num)==cell:
                 print("already missing")
                 return
         blynk_write(missing_cells, blynk_read(missing_cells)+str(cell_num)+",")
         message("missing items in:", blynk_read(missing_cells))
-    print(old)
-    if len(old)==0:
-        blynk_write(missing, 0)
+    
         
 def check_all():
     for cell in range(1, len(cell_date)):
