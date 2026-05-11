@@ -206,7 +206,7 @@ def read_updates():
                 date_str=make_date(t)  
                 blynk_write(cell_date[cell_num], date_str)
             except:
-                date_str=make_str(new_date)
+                date_str=make_date(new_date)
                 blynk_write(cell_date[cell_num], date_str)
                 return
     else:
