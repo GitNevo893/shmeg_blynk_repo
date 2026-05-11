@@ -81,12 +81,11 @@ def blynk_read(pin):
         print("Blynk read error:", e)
         return None
     
-def make_str(l1st):
+def make_date(l1st):
     string=""
-    for i in range(len(l1st)):
-        string=string+str(l1st[i])
-        if i<(len(l1st)-1):
-            string=string+","
+    for i in range(2):
+        string=string+str(l1st[i])+","
+    string=string+str(l1st[i])
     return string
 
 def check_expire(cell_num):
@@ -157,7 +156,7 @@ def read_updates():
             check_all()
             return
     cell_num=int(update[0])
-    if update[1]=="update" or update[1]=="change":
+    if update[1]=="update":
         delete=False
     elif update[1]=="change":
         delete=True
@@ -185,7 +184,7 @@ def read_updates():
         for i in range(3,6):
             new_date=new_date+(int(update[i]),)
         if delete:
-            date_str=make_str(new_date)
+            date_str=make_date(new_date)
             blynk_write(cell_date[cell_num], date_str)
         else:
             for i in range(5):
@@ -204,9 +203,7 @@ def read_updates():
                 t_old=time.mktime(old_date)
                 t=min(t_new, t_old)
                 t=time.gmtime(t)
-                for i in range(2):
-                    date_str=date_str+str(t[i])+","
-                date_str=date_str+str(t[i])   
+                date_str=make_date(t)  
                 blynk_write(cell_date[cell_num], date_str)
             except:
                 date_str=make_str(new_date)
