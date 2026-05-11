@@ -5,8 +5,6 @@ from gpiozero import LED, Button
 #from smbus2 import SMBus
 
 # User configuration
-WIFI_SSID="Awesome"
-WIFI_PASSWORD="pr14052008"
 WIFI_SSID="WIFI_Hugim"
 WIFI_PASSWORD="H@123456"
 BLYNK_AUTH="fU23BptiMdprQD_ja9ks-fpYzFL2g16c"
@@ -69,7 +67,7 @@ def blynk_write(pin, value):
     url = f"{WRITE_URL}&{pin}={value}"
     try:
         r = requests.get(url, timeout=5)
-        print(f"Sent {value} → {pin}")
+        print(f"Sent {value} to {pin}")
     except Exception as e:
         print("Blynk write error:", e)
 
@@ -152,7 +150,10 @@ def read_updates():
         message("from blynk:", update[1])
         return
     if update[0]=="check":
-        check_all()
+        try:
+            check_expire(update[1])
+        except:
+            check_all()
         return
     cell_num=int(update[0])
     if update[1]=="update" or update[1]=="change":
@@ -214,17 +215,6 @@ def read_updates():
     print("update succeful! "+update[1]+"d cell "+update[0],"' "+update[2])
     return update
 
-
-on=False
-def is_on():
-    global on
-    command=blynk_read(updates)
-    if command=="off":
-        on=False
-    elif command=="on":
-        on=True
-    else:
-        return
 def light(cell_num, value):
     if value==1:
         LED[cell_num].on()
@@ -244,10 +234,8 @@ def read_leds():
 # Main loop
 blynk_write(missing_cells, " ")
 def main():
-    is_on()
     if True:
         read_updates()
-        read_leds()
     time.sleep(0.5)
 while True:
     try:
