@@ -184,7 +184,6 @@ def read_updates():
         for i in range(3,6):
             new_date=new_date+(int(update[i]),)
         if delete:
-            print("why are u here?")
             date_str=make_date(new_date)
             blynk_write(cell_date[cell_num], date_str)
         else:
@@ -195,7 +194,7 @@ def read_updates():
                 old_update=blynk_read(cell_date[cell_num])
                 old_update=old_update.strip(" ")
                 old_update=old_update.split(",")
-                for i in range(3,6):
+                for i in range(3):
                     old_date=old_date+(int(old_update[i]),)
                 for i in range(5):
                     old_date=old_date+(0,)
