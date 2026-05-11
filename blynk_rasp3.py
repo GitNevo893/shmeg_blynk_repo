@@ -119,7 +119,7 @@ def check_expire(cell_num):
             if str(cell_num)==cell:
                 print("already missing")
                 return
-        blynk_write(missing_cells, blynk_read(missing_cells)+","+str(cell_num))
+        blynk_write(missing_cells, blynk_read(missing_cells)+str(cell_num)+",")
         message("missing items in:", blynk_read(missing_cells))
         
 def check_all():
@@ -151,7 +151,7 @@ def read_updates():
         return
     if update[0]=="check":
         try:
-            check_expire(update[1])
+            check_expire(int(update[1]))
         except:
             check_all()
         return
