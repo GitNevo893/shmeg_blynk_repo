@@ -152,9 +152,10 @@ def read_updates():
     if update[0]=="check":
         try:
             check_expire(int(update[1]))
+            return
         except:
             check_all()
-        return
+            return
     cell_num=int(update[0])
     if update[1]=="update" or update[1]=="change":
         delete=False
