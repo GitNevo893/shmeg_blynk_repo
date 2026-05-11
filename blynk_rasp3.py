@@ -119,6 +119,8 @@ def check_expire(cell_num):
                 return
         blynk_write(missing_cells, blynk_read(missing_cells)+str(cell_num)+",")
         message("missing items in:", blynk_read(missing_cells))
+    if len(old)==0:
+        blynk_write(missing, 0)
         
 def check_all():
     for cell in range(1, len(cell_date)):
