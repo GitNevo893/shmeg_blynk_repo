@@ -182,7 +182,6 @@ def read_updates():
                         return
                 blynk_write(cell_content[cell_num], make_str(old_content)+","+new_content)
             except:
-                print("peleg dont forget to check this alright man")
                 blynk_write(cell_content[cell_num], new_content)            
     elif update[2]=="date":
         for i in range(3,6):
