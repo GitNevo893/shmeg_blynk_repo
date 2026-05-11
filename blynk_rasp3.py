@@ -109,8 +109,8 @@ def check_expire(cell_num):
     old=old.split(",")
     if time_expire>epoch_time:
         print("items in cell ", cell_num, " are still good!")
-        if cell_num in old:
-            old.remove(cell_num)
+        if str(cell_num) in old:
+            old.remove(str(cell_num))
     else:
         print("item expired in cell ", cell_num)
         for cell in old:
