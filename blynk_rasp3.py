@@ -204,8 +204,9 @@ def read_updates():
                 t_old=time.mktime(old_date)
                 t=min(t_new, t_old)
                 t=time.gmtime(t)
-                for i in t:
-                    date_str=date_str+str(i)+","
+                for i in range(2):
+                    date_str=date_str+str(t[i])+","
+                date_str=date_str+str(t[i])   
                 blynk_write(cell_date[cell_num], date_str)
             except:
                 date_str=make_str(new_date)
