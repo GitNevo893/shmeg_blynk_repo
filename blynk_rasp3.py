@@ -199,6 +199,7 @@ def read_updates():
             old_date=old_date.split(",")
             for i in range(3):
                 if int(new_date[i])>int(old_date[i]):
+                    print("yo?")
                     return 
             date_str=make_date(new_date)
             blynk_write(cell_date[cell_num], date_str)
