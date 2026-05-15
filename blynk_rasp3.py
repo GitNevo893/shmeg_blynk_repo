@@ -172,17 +172,18 @@ def read_updates():
         if delete:
             blynk_write(cell_content[cell_num], new_content)
         else:
-            try:
-                old_content=blynk_read(cell_content[cell_num])
-                old_content=old_content.strip(" ")
-                old_content=old_content.split(",")
-                for item in old_content:
-                    if new_content==item:
-                        print("already in content")
-                        return
-                blynk_write(cell_content[cell_num], make_str(old_content)+","+new_content)
-            except:
-                blynk_write(cell_content[cell_num], new_content)            
+            old_content=blynk_read(cell_content[cell_num])
+            old_content=old_content.strip(" ")
+            old_content=old_content.split(",")
+            for item in old_content:
+                if new_content==item:
+                    print("already in content")
+                    return
+            content=""
+            for item in content:
+                content=content+str(item)+", "
+            content=content+str(new_content)
+            blynk_write(cell_content[cell_num], content)        
     elif update[2]=="date":
         for i in range(3,6):
             new_date=new_date+(int(update[i]),)
