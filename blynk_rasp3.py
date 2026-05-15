@@ -190,29 +190,15 @@ def read_updates():
             date_str=make_date(new_date)
             blynk_write(cell_date[cell_num], date_str)
         else:
-            for i in range(5):
-                new_date=new_date+(0,)
-            new_date=new_date+(-1,)
-            try:
-                old_update=blynk_read(cell_date[cell_num])
-                old_update=old_update.strip(" ")
-                old_update=old_update.split(",")
-                for i in range(3):
-                    old_date=old_date+(int(old_update[i]),)
-                for i in range(5):
-                    old_date=old_date+(0,)
-                old_date=old_date+(-1,)
-                t_new=time.mktime(new_date)
-                t_old=time.mktime(old_date)
-                if t_old>=t_new:
-                    date_str=make_date(new_date)
-                else:
-                    date_str=make_date(old_date)  
-                blynk_write(cell_date[cell_num], date_str)
-            except:
-                date_str=make_date(new_date)
-                blynk_write(cell_date[cell_num], date_str)
-                return
+            old_date=blynk_read(cell_date[cell_num])
+            old_date=old_date.strip(" ")
+            old_date=old_date.split(",")
+            for i in range(3):
+                if new_date[i]>old_date[i]:
+                    return 
+            date_str=make_date(new_date)
+            blynk_write(cell_date[cell_num], date_str)
+            return
     else:
         print("invalid request")
         return
