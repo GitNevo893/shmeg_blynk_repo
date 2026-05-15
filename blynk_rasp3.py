@@ -168,6 +168,7 @@ def read_updates():
         print("invalid request")
         return
     if update[2]=="content":
+        content=""
         new_content=update[3]
         if delete:
             blynk_write(cell_content[cell_num], new_content)
@@ -179,7 +180,6 @@ def read_updates():
                 if new_content==item:
                     print("already in content")
                     return
-            content=""
             for item in content:
                 content=content+str(item)+", "
             content=content+str(new_content)
