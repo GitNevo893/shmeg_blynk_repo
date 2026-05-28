@@ -180,7 +180,7 @@ def read_updates():
                 if new_content==item:
                     print("already in content")
                     return
-            for item in content:
+            for item in old_content:
                 content=content+str(item)+", "
             content=content+str(new_content)
             blynk_write(cell_content[cell_num], content)        
