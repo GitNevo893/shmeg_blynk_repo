@@ -233,6 +233,7 @@ blynk_write(missing_cells, " ")
 def main():
     if True:
         read_updates()
+        read_leds()
     time.sleep(0.5)
 while True:
     try:
