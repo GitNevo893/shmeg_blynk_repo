@@ -18,7 +18,7 @@ missing="V16"
 missing_cells="V17"
 updates="V18"
 # Initialize Pins
-LED=[0]+[LED(pin) for pin in [4,17,27,24,23,22,6,5,23]]
+LED=[0]+[LED(pin) for pin in [4,17,27,24,25,22,6,5,23]]
 #Initialize LCD
 addr = 0x27
 bus = smbus.SMBus(1)
