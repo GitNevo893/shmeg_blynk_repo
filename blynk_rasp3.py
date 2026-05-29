@@ -18,7 +18,7 @@ missing="V16"
 missing_cells="V17"
 updates="V18"
 # Initialize Pins
-LED=[0]+[LED(pin) for pin in [4,25,27,24,17,22,6,5,23]]
+LEDS=[0]+[LED(pin) for pin in [4,25,27,24,17,22,6,5,23]]
 #Initialize LCD
 addr = 0x27
 bus = smbus.SMBus(1)
@@ -214,17 +214,19 @@ def read_updates():
 
 def light(cell_num, value):
     if value==1:
-        LED[cell_num].on()
+        LEDS[cell_num].on()
     elif value==0:
-        LED[cell_num].off()
+        LEDS[cell_num].off()
     else:
         print("invalid request")
+
 def read_leds():
-    for cell in cell_led:
+    for cell_num in len(cell_led):
+        value=0
         try:
-            value=int(blynk_read(cell))
+            value=int(blynk_read(cell_led[cell_num]))
             print(value)
-            light(cell_led.index(cell), value)
+            light(cell_num, value)
         except:
             print("")
     
