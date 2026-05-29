@@ -221,7 +221,7 @@ def light(cell_num, value):
         print("invalid request")
 
 def read_leds():
-    for cell_num in len(cell_led):
+    for cell_num in range(len(cell_led)):
         value=0
         try:
             value=int(blynk_read(cell_led[cell_num]))
