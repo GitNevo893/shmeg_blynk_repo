@@ -238,7 +238,6 @@ def read_leds():
         pin=cell_led[cell_num]
         if pin in values:
             value=int(values[pin])
-            print(f"{pin} = {value}")
             light(cell_num, value)
     
 # Main loop
