@@ -159,7 +159,7 @@ def read_updates():
         update.append(update[0].strip(" "))
         update.pop(0)
     print(update)
-    if update[0]=="0" or update[0]=="on" or update[0]=="off":
+    if update[0]=="0" or len(update)<2:
         return
     if update[0]=="write":
         message("from blynk:", update[1])
