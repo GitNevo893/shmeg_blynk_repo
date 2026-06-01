@@ -2,6 +2,7 @@ import time
 import smbus
 import requests
 from gpiozero import LED, Button
+import json
 #from smbus2 import SMBus
 
 # User configuration
@@ -20,11 +21,11 @@ updates="V18"
 # Initialize Pins
 LEDS=[0]+[LED(pin) for pin in [4,24,27,22,17,25,6,5,23]]
 #Initialize LCD
-addr = 0x27
-bus = smbus.SMBus(1)
+addr=0x27
+bus= smbus.SMBus(1)
 def send(x, mode=0):
-    high = mode | (x & 0xF0) | 0x08
-    low  = mode | ((x << 4) & 0xF0) | 0x08
+    high=mode | (x & 0xF0) | 0x08
+    low=mode | ((x << 4) & 0xF0) | 0x08
     bus.write_byte(addr, high)
     bus.write_byte(addr, high | 0x04)
     bus.write_byte(addr, high)
@@ -48,7 +49,7 @@ def scroll_line(text, line=1, delay=0.15):
             send(0x80)
         else:
             send(0xC0)
-        window = text[i:i+16]
+        window=text[i:i+16]
         for ch in window:
             send(ord(ch), 1)
         time.sleep(delay)
@@ -64,33 +65,33 @@ def message(line1, line2):
 
 # Send value to widget in Blynk
 def blynk_write(pin, value):
-    url = f"{WRITE_URL}&{pin}={value}"
+    url=f"{WRITE_URL}&{pin}={value}"
     try:
-        r = requests.get(url, timeout=5)
+        r=requests.get(url, timeout=5)
         print(f"Sent {value} to {pin}")
     except Exception as e:
         print("Blynk write error:", e)
 
 # Get the current value of widget from Blynk
 def blynk_read(pin):
-    url = f"{READ_URL}&{pin}"
+    url=f"{READ_URL}&{pin}"
     try:
-        r = requests.get(url, timeout=5)
+        r=requests.get(url, timeout=5)
         return r.text.strip()
     except Exception as e:
         print("Blynk read error:", e)
         return None
 
 def blynk_read_many(pins):
-    url = READ_URL
+    url=READ_URL
     for pin in pins:
-        url += f"&{pin}"
+        url+=f"&{pin}"
     try:
-        r = requests.get(url, timeout=5)
-        return r.text
+        r=requests.get(url, timeout=5)
+        return r.json()
     except Exception as e:
         print("Blynk read error:", e)
-        return None
+        return {}
     
 def make_date(l1st):
     string=""
@@ -232,8 +233,13 @@ def light(cell_num, value):
         print("invalid request")
 
 def read_leds():
-    values = blynk_read_many(cell_led[1:])
-    print(values)
+    values=blynk_read_many(cell_led[1:])
+    for cell_num in range(1, len(cell_led)):
+        pin=cell_led[cell_num]
+        if pin in values:
+            value=int(values[pin])
+            print(f"{pin} = {value}")
+            light(cell_num, value)
     
 # Main loop
 blynk_write(missing_cells, " ")
