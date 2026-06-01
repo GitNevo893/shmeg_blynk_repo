@@ -80,6 +80,17 @@ def blynk_read(pin):
     except Exception as e:
         print("Blynk read error:", e)
         return None
+
+def blynk_read_many(pins):
+    url = READ_URL
+    for pin in pins:
+        url += f"&{pin}"
+    try:
+        r = requests.get(url, timeout=5)
+        return r.text
+    except Exception as e:
+        print("Blynk read error:", e)
+        return None
     
 def make_date(l1st):
     string=""
@@ -221,14 +232,8 @@ def light(cell_num, value):
         print("invalid request")
 
 def read_leds():
-    for cell_num in range(len(cell_led)):
-        value=0
-        try:
-            value=int(blynk_read(cell_led[cell_num]))
-            print(value)
-            light(cell_num, value)
-        except:
-            print("")
+    values = blynk_read_many(cell_led[1:])
+    print(values)
     
 # Main loop
 blynk_write(missing_cells, " ")
