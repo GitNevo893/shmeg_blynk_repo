@@ -97,7 +97,7 @@ def make_date(l1st):
     string=""
     for i in range(2):
         string=string+str(l1st[i])+","
-    string=string+str(l1st[i])
+    string=string+str(l1st[2])
     return string
 
 def check_expire(cell_num):
@@ -198,8 +198,7 @@ def read_updates():
             blynk_write(cell_content[cell_num], content)        
     elif update[2]=="date":
         for i in range(3,6):
-            new_date=new_date+(int(update[i]),)
-            print(new_date)
+            new_date=new_date+(int(update[i]))
         if delete:
             date_str=make_date(new_date)
             blynk_write(cell_date[cell_num], date_str)
